@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { db } from './firebase'; // Import Firestore
 import { collection, addDoc, query, onSnapshot, orderBy } from 'firebase/firestore';
+import Confetti from 'react-confetti';
+
+
+const thisusernumber = (Math.floor(Math.random() * (100 - 1 + 1)) + 1);
 
 function App() {
+
+
+  const [showConfetti, setShowConfetti] = useState(false);
   const [messages, setMessages] = useState([]);  // Holds messages from Firestore
   const [input, setInput] = useState('');        // Input field state
 
@@ -31,16 +38,19 @@ function App() {
     if (input.trim()) {
       await addDoc(collection(db, 'messages'), {
         text: input,
-        user: 'User 1',
+        user: 'User ' + thisusernumber.toString(),
         timestamp: new Date(),
       });
+      
       setInput(''); // Reset the input field after sending
     }
   };
 
   return (
+<>
+    {showConfetti && <Confetti />}
     <div className="chat-app" style={styles.chatApp}>
-      <h1>React Chat App with Firebase</h1>
+      <h1>WhatsApp, but better</h1>
       <div className="chat-box" style={styles.chatBox}>
         {messages.map((message) => (
           <div key={message.id} className="message" style={styles.message}>
@@ -54,7 +64,7 @@ function App() {
           value={input}
           onKeyPress={handleKeyPress}
           onChange={handleChange}
-          placeholder="Type a message..."
+          placeholder="Type a secret message..."
           style={styles.input}
         />
         <button onClick={handleSendMessage} style={styles.sendButton}>
@@ -62,6 +72,7 @@ function App() {
         </button>
       </div>
     </div>
+    </>
   );
 }
 
@@ -84,10 +95,14 @@ const styles = {
   message: {
     textAlign: 'left',
     marginBottom: '10px',
+    background: '#58ff46',
+    padding: '12px',
+    borderRadius: '15px'
   },
   inputContainer: {
     display: 'flex',
     justifyContent: 'center',
+    marginTop: '50px'
   },
   input: {
     padding: '10px',
@@ -105,6 +120,7 @@ const styles = {
     fontSize: '16px',
     borderRadius: '0 10px 10px 0',
   },
+  
 };
 
 export default App;
