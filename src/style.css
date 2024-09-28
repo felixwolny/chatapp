@@ -1,0 +1,19 @@
+h1, h2{
+    text-align: center;
+}
+.room-item {
+    background: whitesmoke;
+    padding: 10px;
+    width: 100%;
+}
+.room-list {
+    width: 70vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+.roomcreation {
+    background: white;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
